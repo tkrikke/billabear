@@ -1,7 +1,7 @@
-# Base image
+# Use PHP 8.2 CLI as base
 FROM php:8.2-cli
 
-# Install system dependencies
+# Install system dependencies for PHP extensions
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -23,13 +23,13 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /app
 
-# Copy application code
+# Copy all project files
 COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-scripts
 
-# Install Node.js (for assets)
+# Install Node.js (for frontend assets)
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && npm install \
@@ -40,4 +40,3 @@ EXPOSE 8000
 
 # Start PHP built-in server
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
-
