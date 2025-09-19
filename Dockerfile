@@ -41,7 +41,7 @@ RUN composer install --no-interaction --optimize-autoloader --no-scripts
 # Install Node.js and frontend dependencies
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
-    && npm install \
+    && npm install --legacy-peer-deps \
     && npm run build
 
 # Expose port for Railway
